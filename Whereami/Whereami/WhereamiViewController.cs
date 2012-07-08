@@ -4,6 +4,7 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
 using MonoTouch.UIKit;
+using MonoTouch.MapKit;
 
 namespace Whereami
 {
@@ -29,8 +30,10 @@ namespace Whereami
             
             locationManager = new CLLocationManager();
             locationManager.DesiredAccuracy = 0.2;
-            locationManager.StartUpdatingLocation();
             locationManager.Delegate = new WhereAmILocationDelegate();
+            
+            worldView.ShowsUserLocation = true;
+            worldView.Delegate = new WhereAmIMapKitDelegate();
         }
         
         public override void ViewDidUnload ()
@@ -62,6 +65,14 @@ namespace Whereami
         public override void Failed (CLLocationManager manager, NSError error)
         {
             Console.WriteLine("Could not find location: {0}", error);
+        }
+    }
+    
+    public class WhereAmIMapKitDelegate : MKMapViewDelegate
+    {
+        public override void DidUpdateUserLocation (MKMapView mapView, MKUserLocation userLocation)
+        {
+            mapView.SetRegion(new MKCoordinateRegion(userLocation.Coordinate, new MKCoordinateSpan(0.1, 0.1)), true);
         }
     }
 }

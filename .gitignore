@@ -1,0 +1,15 @@
+*.suo
+*.user
+[Bb]in/
+[Oo]bj/
+*.vspscc
+*.vssscc
+*.vs10x
+*.pidb
+*.userprefs
+ReactiveUI/Generated/*.cs
+*.tmp_proj
+**/StyleCop.Cache
+StyleCop.Cache
+TestResults
+_ReSharper*

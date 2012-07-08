@@ -90,6 +90,7 @@
     <Compile Include="WhereamiViewController.designer.cs">
       <DependentUpon>WhereamiViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="BNRMapPoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="WhereamiViewController.xib" />

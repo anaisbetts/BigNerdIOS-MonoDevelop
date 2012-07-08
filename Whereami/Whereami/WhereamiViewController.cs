@@ -30,10 +30,18 @@ namespace Whereami
             
             locationManager = new CLLocationManager();
             locationManager.DesiredAccuracy = 0.2;
-            locationManager.Delegate = new WhereAmILocationDelegate();
+            locationManager.Delegate = new WhereAmILocationDelegate(x => foundLocation(x));
+            
+            activityIndicator.Hidden = true;
             
             worldView.ShowsUserLocation = true;
             worldView.Delegate = new WhereAmIMapKitDelegate();
+            
+            locationTitleField.Delegate = new WAIAnonFieldDelegate(field => {
+                findLocation();
+                field.ResignFirstResponder();
+                return true;
+            });
         }
         
         public override void ViewDidUnload ()
@@ -53,13 +61,47 @@ namespace Whereami
             // Return true for supported orientations
             return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
         }
+        
+        void findLocation()
+        {
+            locationManager.StartUpdatingLocation();
+            activityIndicator.StartAnimating();
+            locationTitleField.Hidden = true;
+        }
+        
+        void foundLocation(CLLocation loc)
+        {
+            var mapPoint = new BNRMapPoint(locationTitleField.Text) { 
+                Coordinate = loc.Coordinate,
+            };
+            
+            worldView.AddAnnotation(mapPoint);
+            
+            locationTitleField.Text = "";
+            activityIndicator.StopAnimating();
+            locationTitleField.Hidden = false;
+            locationManager.StopUpdatingLocation();
+        }
     }
     
     public class WhereAmILocationDelegate : CLLocationManagerDelegate
     {
+        readonly Action<CLLocation> reallyFoundLocation;
+        
+        public WhereAmILocationDelegate(Action<CLLocation> reallyFoundLocation)
+        {
+            this.reallyFoundLocation = reallyFoundLocation;
+        }
+    
         public override void UpdatedLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
         {
             Console.WriteLine("{0},{1}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude);
+            
+            if ((DateTime.Now - ((DateTime)newLocation.Timestamp)) > TimeSpan.FromMinutes(3)) {
+                return;
+            }
+            
+            reallyFoundLocation(newLocation);
         }
         
         public override void Failed (CLLocationManager manager, NSError error)
@@ -73,6 +115,20 @@ namespace Whereami
         public override void DidUpdateUserLocation (MKMapView mapView, MKUserLocation userLocation)
         {
             mapView.SetRegion(new MKCoordinateRegion(userLocation.Coordinate, new MKCoordinateSpan(0.1, 0.1)), true);
+        }
+    }
+    
+    public class WAIAnonFieldDelegate : UITextFieldDelegate
+    {
+        readonly Func<UITextField, bool> shouldReturn;
+        public WAIAnonFieldDelegate(Func<UITextField, bool> shouldReturn)
+        {
+            this.shouldReturn = shouldReturn;
+        }
+    
+        public override bool ShouldReturn (UITextField textField)
+        {
+            return shouldReturn(textField);
         }
     }
 }

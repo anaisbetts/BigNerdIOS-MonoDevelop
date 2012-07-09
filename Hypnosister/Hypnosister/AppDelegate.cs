@@ -30,13 +30,11 @@ namespace Hypnosister
             
             var viewFrame = new RectangleF(160, 240, 100, 150);
             var view = new HypnosisView() { Frame = viewFrame };
-            view.BackgroundColor = UIColor.Red;
             window.AddSubview(view);
             
             var anotherFrame = new RectangleF(20, 30, 50, 50);
             var anotherView = new HypnosisView() { Frame = anotherFrame };
-            anotherView.BackgroundColor = UIColor.Blue;
-            window.AddSubview(anotherView);
+            view.AddSubview(anotherView);
             
             window.BackgroundColor = UIColor.White;
             

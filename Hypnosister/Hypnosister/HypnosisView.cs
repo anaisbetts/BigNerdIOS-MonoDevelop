@@ -8,8 +8,9 @@ namespace Hypnosister
     {
         public HypnosisView ()
         {
+            BackgroundColor = UIColor.Clear;
         }
-       
+        
         public override void Draw (RectangleF rect)
         {
             base.Draw (rect);

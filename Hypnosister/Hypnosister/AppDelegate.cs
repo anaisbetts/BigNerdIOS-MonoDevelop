@@ -37,6 +37,7 @@ namespace Hypnosister
             scrollView.AddSubview(view);
             scrollView.AddSubview(anotherView);
             scrollView.ContentSize = new SizeF(window.Bounds.Width * 2.0f, window.Bounds.Height);
+            scrollView.PagingEnabled = true;
             
             window.BackgroundColor = UIColor.White;
             

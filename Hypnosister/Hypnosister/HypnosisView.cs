@@ -10,6 +10,16 @@ namespace Hypnosister
         public HypnosisView ()
         {
             BackgroundColor = UIColor.Clear;
+            CircleColor = UIColor.LightGray;
+        }
+        
+        UIColor _CircleColor;
+        public UIColor CircleColor { 
+            get { return _CircleColor; }
+            set { 
+                _CircleColor = value;
+                SetNeedsDisplay();
+            }
         }
         
         public override void Draw (RectangleF rect)
@@ -22,7 +32,7 @@ namespace Hypnosister
             var maxRadius = distance(Bounds.Width, Bounds.Height) / 2.0f;
             
             ctx.SetLineWidth(10);
-            ctx.SetRGBStrokeColor(0.6f, 0.6f, 0.6f, 1.0f);
+            CircleColor.SetStroke();
             
             for (float currentRadius = maxRadius; currentRadius > 0; currentRadius -= 20.0f) {
                 ctx.AddArc(center.X, center.Y, currentRadius, 0.0f, (float)Math.PI * 2.0f, true);
@@ -45,6 +55,21 @@ namespace Hypnosister
         float distance(float x, float y)
         {
             return (float)Math.Sqrt(x*x + y*y);
+        }
+        
+        public override bool CanBecomeFirstResponder {
+            get { return true; }
+        }
+        
+        public override void MotionBegan (UIEventSubtype motion, UIEvent evt)
+        {
+            base.MotionBegan (motion, evt);
+            if (motion != UIEventSubtype.MotionShake) {
+                return;
+            }
+            
+            Console.WriteLine("Device started shaking!");
+            CircleColor = UIColor.Red;
         }
     }
 }

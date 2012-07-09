@@ -30,6 +30,7 @@ namespace Hypnosister
             
             var view = new HypnosisView() { Frame = window.Bounds };
             window.AddSubview(view);
+            view.BecomeFirstResponder();
             
             window.BackgroundColor = UIColor.White;
             

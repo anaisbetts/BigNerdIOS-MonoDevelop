@@ -18,13 +18,15 @@ namespace Hypnosister
             
             var center = new PointF(Bounds.X + Bounds.Width / 2.0f, Bounds.Y + Bounds.Height / 2.0f);
             
-            var maxRadius = distance(Bounds.Width, Bounds.Height) / 4.0f;
+            var maxRadius = distance(Bounds.Width, Bounds.Height) / 2.0f;
             
             ctx.SetLineWidth(10);
             ctx.SetRGBStrokeColor(0.6f, 0.6f, 0.6f, 1.0f);
-            ctx.AddArc(center.X, center.Y, maxRadius, 0.0f, (float)Math.PI * 2.0f, true);
             
-            ctx.StrokePath();
+            for (float currentRadius = maxRadius; currentRadius > 0; currentRadius -= 20.0f) {
+                ctx.AddArc(center.X, center.Y, currentRadius, 0.0f, (float)Math.PI * 2.0f, true);
+                ctx.StrokePath();
+            }
         }
         
         // In the book they call the C function hypot()

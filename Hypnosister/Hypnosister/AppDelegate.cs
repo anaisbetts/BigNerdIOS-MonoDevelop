@@ -28,13 +28,8 @@ namespace Hypnosister
             // create a new window instance based on the screen size
             window = new UIWindow (UIScreen.MainScreen.Bounds);
             
-            var viewFrame = new RectangleF(160, 240, 100, 150);
-            var view = new HypnosisView() { Frame = viewFrame };
+            var view = new HypnosisView() { Frame = window.Bounds };
             window.AddSubview(view);
-            
-            var anotherFrame = new RectangleF(20, 30, 50, 50);
-            var anotherView = new HypnosisView() { Frame = anotherFrame };
-            view.AddSubview(anotherView);
             
             window.BackgroundColor = UIColor.White;
             

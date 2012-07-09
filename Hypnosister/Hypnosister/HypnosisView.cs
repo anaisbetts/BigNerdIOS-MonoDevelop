@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace Hypnosister
@@ -27,6 +28,17 @@ namespace Hypnosister
                 ctx.AddArc(center.X, center.Y, currentRadius, 0.0f, (float)Math.PI * 2.0f, true);
                 ctx.StrokePath();
             }
+            
+            var text = new NSString("You are getting sleepy.");
+            var font = UIFont.BoldSystemFontOfSize(28.0f);
+            var textSize = text.StringSize(font);
+            
+            UIColor.Black.SetFill();
+            
+            var offset = new SizeF(4.0f, 3.0f);
+            ctx.SetShadowWithColor(offset, 2.0f, UIColor.DarkGray.CGColor);
+            
+            text.DrawString(new PointF(center.X - textSize.Width / 2.0f, center.Y - textSize.Height / 2.0f), font);
         }
         
         // In the book they call the C function hypot()

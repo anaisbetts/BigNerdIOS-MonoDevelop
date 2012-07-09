@@ -31,13 +31,12 @@ namespace Hypnosister
             var scrollView = new UIScrollView(window.Bounds);
             window.AddSubview(scrollView);
             
-            var bigBounds = new RectangleF(0.0f, 0.0f, window.Bounds.Width * 2.0f, window.Bounds.Height * 2.0f);
-            var bigView = new HypnosisView() { Frame = bigBounds };
+            var view = new HypnosisView() { Frame = window.Bounds };
+            var anotherView = new HypnosisView() { Frame = new RectangleF(window.Bounds.Width, 0.0f, window.Bounds.Width, window.Bounds.Height) };
             
-            scrollView.AddSubview(bigView);
-            scrollView.ContentSize = bigBounds.Size;
-            
-            bigView.BecomeFirstResponder();
+            scrollView.AddSubview(view);
+            scrollView.AddSubview(anotherView);
+            scrollView.ContentSize = new SizeF(window.Bounds.Width * 2.0f, window.Bounds.Height);
             
             window.BackgroundColor = UIColor.White;
             

@@ -28,9 +28,16 @@ namespace Hypnosister
             // create a new window instance based on the screen size
             window = new UIWindow (UIScreen.MainScreen.Bounds);
             
-            var view = new HypnosisView() { Frame = window.Bounds };
-            window.AddSubview(view);
-            view.BecomeFirstResponder();
+            var scrollView = new UIScrollView(window.Bounds);
+            window.AddSubview(scrollView);
+            
+            var bigBounds = new RectangleF(0.0f, 0.0f, window.Bounds.Width * 2.0f, window.Bounds.Height * 2.0f);
+            var bigView = new HypnosisView() { Frame = bigBounds };
+            
+            scrollView.AddSubview(bigView);
+            scrollView.ContentSize = bigBounds.Size;
+            
+            bigView.BecomeFirstResponder();
             
             window.BackgroundColor = UIColor.White;
             

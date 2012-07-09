@@ -32,12 +32,15 @@ namespace Hypnosister
             window.AddSubview(scrollView);
             
             var view = new HypnosisView() { Frame = window.Bounds };
-            var anotherView = new HypnosisView() { Frame = new RectangleF(window.Bounds.Width, 0.0f, window.Bounds.Width, window.Bounds.Height) };
             
             scrollView.AddSubview(view);
-            scrollView.AddSubview(anotherView);
-            scrollView.ContentSize = new SizeF(window.Bounds.Width * 2.0f, window.Bounds.Height);
-            scrollView.PagingEnabled = true;
+            scrollView.ContentSize = window.Bounds.Size;
+            
+            scrollView.MinimumZoomScale = 1.0f;
+            scrollView.MaximumZoomScale = 5.0f;
+            scrollView.Delegate = new HSAnonScrollViewerDelegate(sv => {
+                return view;
+            });
             
             window.BackgroundColor = UIColor.White;
             
@@ -45,6 +48,20 @@ namespace Hypnosister
             window.MakeKeyAndVisible ();
             
             return true;
+        }
+    }
+    
+    public class HSAnonScrollViewerDelegate : UIScrollViewDelegate
+    {
+        Func<UIScrollView, UIView> viewForZoomingInScrollView;
+        public HSAnonScrollViewerDelegate(Func<UIScrollView, UIView> viewForZoomingInScrollView)
+        {
+            this.viewForZoomingInScrollView = viewForZoomingInScrollView;
+        }
+    
+        public override UIView ViewForZoomingInScrollView (UIScrollView scrollView)
+        {
+            return viewForZoomingInScrollView(scrollView);
         }
     }
 }

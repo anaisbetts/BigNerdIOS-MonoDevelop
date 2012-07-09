@@ -27,6 +27,7 @@ namespace Hypnosister
         {
             // create a new window instance based on the screen size
             window = new UIWindow (UIScreen.MainScreen.Bounds);
+            UIApplication.SharedApplication.SetStatusBarHidden(true, true);
             
             var scrollView = new UIScrollView(window.Bounds);
             window.AddSubview(scrollView);
